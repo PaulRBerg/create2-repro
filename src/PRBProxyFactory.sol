@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
-import { console2 } from "forge-std/console2.sol";
 import "./IPRBProxy.sol";
 import "./IPRBProxyFactory.sol";
 import "./PRBProxy.sol";
@@ -57,13 +56,7 @@ contract PRBProxyFactory is IPRBProxyFactory {
         bytes32 salt = keccak256(abi.encode(tx.origin, seed));
 
         // Deploy the proxy with CREATE2.
-        bytes memory bytecode = type(PRBProxy).creationCode;
-        bytes32 bytecoteHash = keccak256(abi.encode(bytecode));
-        console2.logBytes32(salt);
-        console2.logBytes32(bytecoteHash);
-        console2.logAddress(address(this));
         proxy = payable(new PRBProxy{ salt: salt }());
-        console2.logAddress(proxy);
 
         // Transfer the ownership from this factory contract to the specified owner.
         IPRBProxy(proxy).transferOwnership(owner);
